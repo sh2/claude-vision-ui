@@ -2,23 +2,23 @@
 
 Simple Web UI to try out Claude 3 Vision.
 
-# Setup
+## Setup
 
 An example of the setup procedure is shown below.
 
-```
-$ git clone https://github.com/sh2/claude-vision-ui.git
-$ cd claude-vision-ui/src
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-$ pip install -r requirements.txt
-$ cd ..
-$ cp template_script.sh script.sh
-$ vim script.sh
-$ ./script.sh
+```bash
+git clone https://github.com/sh2/claude-vision-ui.git
+cd claude-vision-ui/src
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cd ..
+cp template_script.sh script.sh
+vim script.sh
+./script.sh
 ```
 
-# Usage
+## Usage
 
 First, select a language model.
 Next, upload your image files.
