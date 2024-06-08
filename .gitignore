@@ -1,3 +1,3 @@
 src/.venv/
-container.sh
-script.sh
+container*.sh
+script*.sh
