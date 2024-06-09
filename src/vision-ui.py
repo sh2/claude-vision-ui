@@ -19,7 +19,9 @@ def main():
 
     st.title("Claude 3 Vision UI")
 
-    model_options = ["claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307"]
+    model_options = ["claude-3-opus-20240229",
+                     "claude-3-sonnet-20240229", "claude-3-haiku-20240307"]
+
     anthropic_model = st.selectbox("Language Model", model_options)
 
     if not anthropic_model:
