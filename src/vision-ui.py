@@ -6,6 +6,8 @@ import io
 import os
 import streamlit as st
 
+from st_img_pastebutton import paste as paste_image
+
 
 def main():
     anthropic_proxy = os.environ.get("ANTHROPIC_PROXY", "")
@@ -31,17 +33,26 @@ def main():
     if not anthropic_model:
         anthropic_model = model_options[0]
 
-    files = st.file_uploader(
-        "Please upload image files", accept_multiple_files=True, type=["jpeg", "jpg", "png"])
+    upload_method = st.radio("Select upload method", [
+                             "Upload image files", "Paste from Clipboard"])
 
-    if files:
-        # Display image files in two columns
-        columns = st.columns(2)
-        column_index = 0
+    if upload_method == "Upload image files":
+        files = st.file_uploader(
+            "Please upload image files", accept_multiple_files=True, type=["jpeg", "jpg", "png"])
 
-        for file in files:
-            columns[column_index].image(file)
-            column_index = (column_index + 1) % 2
+        if files:
+            # Display image files in two columns
+            columns = st.columns(2)
+            column_index = 0
+
+            for file in files:
+                columns[column_index].image(file)
+                column_index = (column_index + 1) % 2
+    else:
+        pasted_image = paste_image("Paste from Clipboard")
+
+        if pasted_image:
+            st.image(pasted_image)
 
     clear = st.button("Clear Chat History")
 
@@ -74,30 +85,46 @@ def main():
         })
 
         # Attach images to the first message
-        if files:
-            index = 0
+        if upload_method == "Upload image files":
+            if files:
+                index = 0
 
-            for file in files:
-                index += 1
-                image = PIL.Image.open(file).convert("RGB")
-                image.thumbnail((1568, 1568))
+                for file in files:
+                    index += 1
+                    image = PIL.Image.open(file).convert("RGB")
+                    image.thumbnail((1568, 1568))
 
-                with io.BytesIO() as buffer:
-                    image.save(buffer, format="JPEG")
-                    image_base64 = base64.b64encode(
-                        buffer.getvalue()).decode("utf-8")
+                    with io.BytesIO() as buffer:
+                        image.save(buffer, format="JPEG")
+                        image_base64 = base64.b64encode(
+                            buffer.getvalue()).decode("utf-8")
 
+                    messages_with_images[0]["content"].append({
+                        "type": "text",
+                        "text": f"Image {index}:"
+                    })
+
+                    messages_with_images[0]["content"].append({
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": "image/jpeg",
+                            "data": image_base64
+                        }
+                    })
+        else:
+            if pasted_image:
                 messages_with_images[0]["content"].append({
                     "type": "text",
-                    "text": f"Image {index}:"
+                    "text": "Image 1:"
                 })
 
                 messages_with_images[0]["content"].append({
                     "type": "image",
                     "source": {
                         "type": "base64",
-                        "media_type": "image/jpeg",
-                        "data": image_base64
+                        "media_type": "image/png",
+                        "data": pasted_image.split(",")[1]
                     }
                 })
 
