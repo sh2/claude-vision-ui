@@ -19,7 +19,7 @@ def main():
     anthropic_client = anthropic.Anthropic(
         api_key=os.environ.get("ANTHROPIC_API_KEY", ""), http_client=http_client)
 
-    st.title("Claude 3 Vision UI")
+    st.title("Claude Vision UI")
 
     model_options = [
         "claude-3-5-sonnet-latest",
