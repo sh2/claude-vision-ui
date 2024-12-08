@@ -14,7 +14,7 @@ def main():
     http_client = None
 
     if anthropic_proxy:
-        http_client = httpx.Client(proxies={"https://": anthropic_proxy})
+        http_client = httpx.Client(proxy=anthropic_proxy)
 
     anthropic_client = anthropic.Anthropic(
         api_key=os.environ.get("ANTHROPIC_API_KEY", ""), http_client=http_client)

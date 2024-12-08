@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1
 WORKDIR /usr/src/app
 COPY src/requirements.txt src/run.sh src/vision-ui.py ./
